@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LP→note・Threads生成ツール | アフィリエイト投稿文ジェネレーター</title>
+  <meta name="description" content="アフィリエイトLPの全文を貼るだけで、毎回ちがう切り口のnote記事とThreads投稿を生成。リスト未経験者・初心者向けの無料ツール。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">無料ツール</span>
+  <h1 class="title">LP→note・Threads生成ツール</h1>
+  <p class="lead">紹介したいLP（ランディングページ）の全文を貼るだけで、<strong>毎回ちがう切り口</strong>のnote記事とThreads投稿を自動でつくります。どの分野でも、LPを貼り替えれば使えます。</p>
+
+  <div class="card howto">
+    <b>📘 使い方（3ステップ）</b>
+    <ol>
+      <li><b>Gemini APIキー</b>（無料）を入れる … 取り方は STEP1 にあります</li>
+      <li>紹介したい<b>LPの全文を貼る</b></li>
+      <li><b>方向性を選んで生成</b> → 出てきた文章をコピーして note / Threads に貼る</li>
+    </ol>
+    <p class="hint" style="margin:6px 0 0">※ 投稿の自動化はしません。「文章づくり」までを助けるツールです。投稿は手動でコピペします。</p>
+  </div>
+
+  <div class="card warn-box">
+    <p class="hint" style="font-size:13px;color:#7a5a17;margin:0">⚠️ <b>出てきた文章は必ず手直ししてください。</b><br>無料のAI（Gemini）を使っているため、文章が不自然になることがあります。叩き台として、お使いのAI（ChatGPT / Claude など）も使いながら、ご自身の言葉で仕上げてください。</p>
+  </div>
+
+  <div class="card">
+    <div class="step-h"><span class="step-no">1</span>Gemini APIキー（無料）を入れる</div>
+    <p class="hint">Googleが無料で配っている「AIを動かすための鍵」です。これを入れないと文章が作れません。</p>
+    <input type="password" id="api-key" placeholder="AIza... から始まる文字列を貼り付け" autocomplete="off">
+    <details open>
+      <summary>🔑 APIキーの取り方（クリックで開閉）</summary>
+      <ol class="guide">
+        <li><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">Google AI Studio のキー発行ページ</a> を開く</li>
+        <li>自分のGoogleアカウントでログインする</li>
+        <li>「Create API key（APIキーを作成）」を押す</li>
+        <li>表示された <b>AIza…</b> で始まる文字列をコピーする</li>
+        <li>上の入力欄に貼り付ける（次回からは自動で入ります）</li>
+      </ol>
+      <p class="hint">🔒 鍵はあなたのブラウザにだけ保存されます。サーバーには保存せず、文章を作るときにGoogleへ送るだけです。</p>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="step-h"><span class="step-no">2</span>紹介するLPの全文を貼る</div>
+    <p class="hint">あなたが紹介したい商品・セミナーなどのLP（ランディングページ）の本文を、まるごとコピーして貼ってください。LPを貼り替えれば、別の案件にもそのまま使えます。</p>
+    <textarea id="lp-text" rows="8" placeholder="紹介したいLPの本文を、まるごと貼り付けてください。"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="step-h"><span class="step-no">3</span>くわしい設定（すべて任意）</div>
+    <p class="hint">空欄でも動きます。でも入れるほど“あなたらしい”紹介記事になります。</p>
+    <p class="hint" style="color:var(--accent)">💾 入力した内容は<b>あなたのブラウザにだけ自動保存</b>され、次回も引き継がれます。</p>
+
+    <div class="field">
+      <label class="label">LPのURL（アフィリエイトリンク）</label>
+      <p class="hint">記事の案内ボックスに表示する、あなたのアフィリエイトリンク（誘導先のURL）です。</p>
+      <input type="text" id="lp-url" placeholder="https://...">
+    </div>
+
+    <div class="field">
+      <label class="label">あなたは何者か（立場・プロフィール）</label>
+      <p class="hint">“紹介する人”としてのあなたの立場や背景。くわしく書くほど、記事に深みと説得力が出ます。</p>
+      <textarea id="persona" rows="5" placeholder="例: 会社員をしながら副業を3年試してきました。時間に追われる毎日で「もっとラクにできないか」と探していて、○○に出会ってから発信を始めました。同じように悩んでいる人に役立つ情報を届けています。"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="label">あなたの言葉サンプル（文体の参考）</label>
+      <p class="hint">普段の言葉づかいや過去の投稿を数行。AIが“雰囲気”だけ真似ます（毎回同じにならないよう表現は変えます）。</p>
+      <textarea id="voice" rows="3" placeholder="あなたが普段書いている文章を数行そのまま貼ってください。"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="label">いつの視点で書く？（毎回の切り口）</label>
+      <p class="hint">毎日投稿しても内容が被らないよう、生成のたびに切り口を自動で変えます。</p>
+      <div class="seg" id="timeframe-seg">
+        <button type="button" data-key="random" data-active="true">🎲 おまかせ（ランダム）</button>
+        <button type="button" data-key="past" data-active="false">過去をふり返る</button>
+        <button type="button" data-key="now" data-active="false">今・最近</button>
+        <button type="button" data-key="trend" data-active="false">これから・トレンド</button>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:4px">💡 文章を作るときは、毎回かならずリサーチ工程（AIが要点を整理）を挟んでから書きます（自動）。</p>
+  </div>
+
+  <div class="card">
+    <div class="step-h"><span class="step-no">4</span>方向性を選ぶ（内容の被りを防ぐ）</div>
+    <p class="hint">同じLPでも毎回ちがう角度で書くために、まず「どんな方向性で書くか」を5案出します。1つ選ぶとその切り口で書きます（選ばなくてもOK＝おまかせ）。</p>
+    <button type="button" class="btn" id="btn-angles" disabled>🎲 方向性を5案出す</button>
+    <p class="hint" id="angles-hint" style="margin-top:8px">STEP1とSTEP2を入れると押せます。</p>
+    <div id="angles-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="step-h"><span class="step-no">5</span>生成する</div>
+    <p class="hint">つくりたいものを選んでください。出てきたら「コピー」して、note / Threads に貼り付けます。</p>
+    <div class="btns">
+      <button type="button" class="btn" data-mode="note" disabled>note記事をつくる</button>
+      <button type="button" class="btn" data-mode="threads" disabled>Threads投稿 5本</button>
+      <button type="button" class="btn" data-mode="threads-pin" disabled>Threadsピン止め 3連投</button>
+    </div>
+    <p class="hint" id="gen-hint" style="margin-top:8px">STEP1とSTEP2を入れると押せます。</p>
+    <p class="spinner" id="spinner" hidden></p>
+  </div>
+
+  <div id="error-box" class="err" hidden></div>
+  <div id="warn-box" class="err" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa" hidden></div>
+  <div id="analysis-box"></div>
+  <div id="result-box"></div>
+
+  <p class="footer-note">出てきた文章はそのまま投稿せず、必ずご自身で確認・手直ししてからご利用ください。</p>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
