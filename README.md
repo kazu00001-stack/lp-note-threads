@@ -4,37 +4,39 @@
 
 ## 公開URL
 
-（デプロイ後に更新）
+**https://kazu00001-stack.github.io/lp-note-threads/**
+
+GitHub: https://github.com/kazu00001-stack/lp-note-threads
 
 ## 機能
 
 - LP全文 → AI分析 → リサーチ → 執筆（Gemini 2.5 Flash）
 - 方向性5案から切り口を選択（未選択でも生成可）
 - note記事 / Threads 5本 / ピン止め3連投
-- APIキー・入力内容はブラウザ localStorage のみ（サーバー非保存）
+- **ブラウザ完結** — APIキー・入力は localStorage のみ。Gemini へ直接送信
 - 投稿の自動化はしない（コピペ用）
 
-## ローカル開発
+## ローカル確認
 
 ```bash
 cd 1000.ツール/LP_note_Threads生成
-npx vercel dev
+python3 -m http.server 8080
+# http://localhost:8080 を開く
 ```
 
-## デプロイ（Vercel）
+## デプロイ（GitHub Pages）
 
-1. GitHub `kazu00001-stack/lp-note-threads` に push
-2. Vercel で Import → Framework Preset: Other
-3. デプロイ完了後 `https://lp-note-threads.vercel.app/` 等で公開
+リポジトリ root を GitHub Pages で公開（main / root）。
 
 ## 構成
 
 | ファイル | 役割 |
 |---------|------|
 | `index.html` | UI |
-| `app.js` | フロント（localStorage・API呼び出し） |
+| `app.js` | フロント（localStorage・生成フロー） |
+| `engine.js` | Gemini API 呼び出し・プロンプト |
 | `style.css` | スタイル |
-| `api/generate.js` | Vercel Serverless（Gemini プロキシ） |
+| `api/generate.js` | Vercel 用（任意・未使用） |
 
 ## 注意
 

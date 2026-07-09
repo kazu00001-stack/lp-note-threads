@@ -1,3 +1,5 @@
+import { runGenerate } from "./engine.js";
+
 const MODE_LABELS = {
   note: "note記事をつくる",
   threads: "Threads投稿 5本",
@@ -146,27 +148,7 @@ function optionsPayload() {
 }
 
 async function apiPost(payload) {
-  const res = await fetch("/api/generate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  let data = null;
-  const text = await res.text();
-  try {
-    data = text ? JSON.parse(text) : null;
-  } catch {
-    data = null;
-  }
-  if (!res.ok || !data) {
-    throw new Error(
-      data?.error ??
-        (res.status === 504 || res.status === 502 || res.status === 500
-          ? "サーバーが混雑またはタイムアウトしました。少し時間をおいて、もう一度お試しください。"
-          : `通信に失敗しました（${res.status}）。もう一度お試しください。`)
-    );
-  }
-  return data;
+  return runGenerate(payload);
 }
 
 function renderAnalysis(analysis) {
